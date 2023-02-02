@@ -1,100 +1,49 @@
 <!DOCTYPE html>
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
-    <head>
-        <meta charset="utf-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
 
-        <title>Laravel</title>
+    <title>Laravel</title>
 
-        <!-- Fonts -->
-        <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@200;600&display=swap" rel="stylesheet">
+    <!-- Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@200;600&display=swap" rel="stylesheet">
 
-        <!-- Styles -->
-        <style>
-            html, body {
-                background-color: #fff;
-                color: #636b6f;
-                font-family: 'Nunito', sans-serif;
-                font-weight: 200;
-                height: 100vh;
-                margin: 0;
-            }
+    <link rel="stylesheet" href="{{asset('css/main.css')}}">
 
-            .full-height {
-                height: 100vh;
-            }
+    <!-- Styles -->
 
-            .flex-center {
-                align-items: center;
-                display: flex;
-                justify-content: center;
-            }
+</head>
+<body>
+<div id="container-1">
+    <h2 align="center">KPIS Dashboard Task</h2>
+</div>
+<div id="container">
+    <div class="kpi-card orange">
+        <a href="{{route("transactions.kpi.index")}}">
+            <span class="card-value">User KPI </span>
 
-            .position-ref {
-                position: relative;
-            }
+            <span class="card-text">Click to see more details</span>
+        </a>
 
-            .top-right {
-                position: absolute;
-                right: 10px;
-                top: 18px;
-            }
+    </div>
 
-            .content {
-                text-align: center;
-            }
 
-            .title {
-                font-size: 84px;
-            }
+    <div class="kpi-card purple">
+        <a href="">
+            <span class="card-value">Product KPI </span>
+            <span class="card-text">Click to see more details</span>
+        </a>
+    </div>
 
-            .links > a {
-                color: #636b6f;
-                padding: 0 25px;
-                font-size: 13px;
-                font-weight: 600;
-                letter-spacing: .1rem;
-                text-decoration: none;
-                text-transform: uppercase;
-            }
+    <div class="kpi-card grey-dark">
+        <a href="">
+            <span class="card-value">Transaction KPI </span>
+            <span class="card-text">Click to see more details</span>
+        </a>
+    </div>
 
-            .m-b-md {
-                margin-bottom: 30px;
-            }
-        </style>
-    </head>
-    <body>
-        <div class="flex-center position-ref full-height">
-            @if (Route::has('login'))
-                <div class="top-right links">
-                    @auth
-                        <a href="{{ url('/home') }}">Home</a>
-                    @else
-                        <a href="{{ route('login') }}">Login</a>
+</div>
 
-                        @if (Route::has('register'))
-                            <a href="{{ route('register') }}">Register</a>
-                        @endif
-                    @endauth
-                </div>
-            @endif
-
-            <div class="content">
-                <div class="title m-b-md">
-                    Laravel
-                </div>
-
-                <div class="links">
-                    <a href="https://laravel.com/docs">Docs</a>
-                    <a href="https://laracasts.com">Laracasts</a>
-                    <a href="https://laravel-news.com">News</a>
-                    <a href="https://blog.laravel.com">Blog</a>
-                    <a href="https://nova.laravel.com">Nova</a>
-                    <a href="https://forge.laravel.com">Forge</a>
-                    <a href="https://vapor.laravel.com">Vapor</a>
-                    <a href="https://github.com/laravel/laravel">GitHub</a>
-                </div>
-            </div>
-        </div>
-    </body>
+</body>
 </html>

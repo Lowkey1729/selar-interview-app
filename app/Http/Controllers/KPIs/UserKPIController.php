@@ -10,7 +10,7 @@ class UserKPIController extends Controller
 {
     public function index()
     {
-
+        
     }
 
     /**

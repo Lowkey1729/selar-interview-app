@@ -3,6 +3,7 @@
 namespace App\CustomFilters\TransactionVolumeFilter\Filters;
 
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Support\Facades\DB;
 
 class Date implements \App\CustomFilters\Filter
 {
@@ -12,6 +13,6 @@ class Date implements \App\CustomFilters\Filter
      */
     public static function apply(Builder $builder, $value): Builder
     {
-        // TODO: Implement apply() method.
+        return $builder->whereBetween(DB::raw('DATE(created_at)'), [$value['from'], $value['to']]);
     }
 }

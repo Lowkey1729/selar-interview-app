@@ -1,6 +1,9 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\KPIs\TransactionKPIController;
+use App\Http\Controllers\KPIs\UserKPIController;
+use App\Http\Controllers\KPIs\ProductKPIController;
 
 /*
 |--------------------------------------------------------------------------
@@ -17,4 +20,45 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::get('transaction/volume', [\App\Http\Controllers\KPIs\TransactionKPIController::class, 'transactionVolume']);
+Route::prefix('kpis')->group(function () {
+
+    Route::prefix('transactions')->group(function () {
+
+        Route::get('/', [TransactionKPIController::class, 'index'])
+            ->name('transactions.kpi.index');
+
+        Route::get('transaction/volume', [TransactionKPIController::class, 'transactionVolume'])
+            ->name('transactions.kpi.volume');
+
+
+    });
+
+    Route::prefix('/products')->group(function () {
+
+        Route::get('new-products', [ProductKPIController::class, 'newProducts'])
+            ->name('products.kpi.new-products');
+
+    });
+
+    Route::prefix('/users')->group(function () {
+
+        Route::get('/', [UserKPIController::class, 'index'])
+            ->name('users.kpi.index');
+
+        Route::get('/unique-sellers', [UserKPIController::class, 'uniqueSellers'])
+            ->name('users.kpi.unique-sellers');
+
+        Route::get('/new-merchants', [UserKPIController::class, 'newMerchants'])
+            ->name('users.kpi.new-merchants');
+
+        Route::get('/new-sellers', [UserKPIController::class, 'newSellers'])
+            ->name('users.kpi.new-sellers');
+
+        Route::get('/new-users', [UserKPIController::class, 'newUsers'])
+            ->name('users.kpi.new-users');
+
+    });
+
+});
+
+

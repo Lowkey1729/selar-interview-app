@@ -15,6 +15,8 @@ $factory->define(Purchase::class, function (Faker $faker) {
         'merchant_commission' => $faker->numberBetween(5, 300),
         'transaction_date' => now(),
         'currency' => $faker->randomElement(['NGN', 'KES', 'USD', 'GHS']),
-        'payment_gateway_commission' => $faker->numberBetween(5, 300) * 0.1
+        'payment_gateway_commission' => $faker->numberBetween(5, 300) * 0.1,
+        'description' => $faker->paragraph,
+        'price' => $faker->numberBetween(10000, 2000000),
     ];
 });
