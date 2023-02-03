@@ -5,35 +5,37 @@ namespace App\Http\Controllers\KPIs;
 use App\Http\Controllers\Controller;
 use App\User;
 use Carbon\Carbon;
+use Illuminate\Http\Request;
 
 class UserKPIController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        
+        $users = $this->getUsers($request->all());
+        return view('kpis.users.index', compact('users'));
     }
 
     /**
      * A merchant is defined as a user that has created at least one product,
      * so a new merchant is a user that added their first product in that particular time frame.
-     * @return void
+     * @return int
      *
      */
-    public function newMerchants()
+    public function newMerchants(): int
     {
-        $newMerchants = User::query()->with(['products'])
+        return $newMerchants = User::query()->with(['products'])
             ->has('products', '=', 1)
             ->count();
     }
 
     /**
      * number of merchants with at least one sale in a particular time frame.
-     * @return void
+     * @return int
      *
      */
-    public function uniqueSellers()
+    public function uniqueSellers(): int
     {
-        $uniqueSellers =
+        return $uniqueSellers =
             User::query()
                 ->with(['purchases'])
                 ->has('purchases')
@@ -42,12 +44,12 @@ class UserKPIController extends Controller
 
     /**
      * number of merchants that made their first sale in a particular time frame
-     * @return void
+     * @return int
      *
      */
-    public function newSellers()
+    public function newSellers(): int
     {
-        $newSellers = User::query()
+        return $newSellers = User::query()
             ->with(['purchases'])
             ->has('purchases', '=', 1)
             ->count();
@@ -55,14 +57,27 @@ class UserKPIController extends Controller
 
     /**
      * a count of all the new users that signed up.
-     * @return void
+     * @return int
      *
      */
-    public function newUsers()
+    public function allUsers(): int
     {
-        $newUsers = User::query()
-            ->whereDate('created_at', '>=', Carbon::now()->add(-3))
+        return $newUsers = User::query()
             ->count();
+    }
+
+    protected function getUsers(array $data, string $filterType = 'allUsers'): int
+    {
+        switch ($filterType) {
+            case "newSellers":
+                return $this->newSellers();
+            case "newMerchants":
+                return $this->newMerchants();
+            case "uniqueSellers":
+                return $this->uniqueSellers();
+            default:
+                return $this->allUsers();
+        }
     }
 
 

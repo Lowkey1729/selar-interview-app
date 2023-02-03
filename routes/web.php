@@ -38,8 +38,8 @@ Route::prefix('kpis')->group(function () {
         Route::get('/', [ProductKPIController::class, 'index'])
             ->name('products.kpi.index');
 
-        Route::get('new-products', [ProductKPIController::class, 'newProducts'])
-            ->name('products.kpi.new-products');
+        Route::get('new-products', [ProductKPIController::class, 'totalProducts'])
+            ->name('products.kpi.total-products');
 
     });
 
