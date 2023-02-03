@@ -20,7 +20,7 @@
 </div>
 <div id="container">
     <div class="kpi-card orange">
-        <a href="{{route("transactions.kpi.index")}}">
+        <a href="{{route("users.kpi.index")}}">
             <span class="card-value">User KPI </span>
 
             <span class="card-text">Click to see more details</span>
@@ -30,14 +30,14 @@
 
 
     <div class="kpi-card purple">
-        <a href="">
+        <a href="{{route('products.kpi.index')}}">
             <span class="card-value">Product KPI </span>
             <span class="card-text">Click to see more details</span>
         </a>
     </div>
 
     <div class="kpi-card grey-dark">
-        <a href="">
+        <a href="{{route("transactions.kpi.index")}}">
             <span class="card-value">Transaction KPI </span>
             <span class="card-text">Click to see more details</span>
         </a>

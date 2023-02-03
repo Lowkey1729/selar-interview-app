@@ -14,7 +14,7 @@ class CurrencySeeder extends Seeder
         $currencies = $this->getCurrencies();
         $table = 'currencies';
         foreach ($currencies as $currency) {
-            \Illuminate\Support\Facades\DB::table($table)->insert($currency);
+            \Illuminate\Support\Facades\DB::table($table)->insertOrIgnore($currency);
         }
 
 

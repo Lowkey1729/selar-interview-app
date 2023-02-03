@@ -39,11 +39,11 @@ class TransactionKPIController extends Controller
         $validator = Validator::make($request->all(), $this->validationRules(), $this->validationMessages());
 
         if ($validator->fails()) {
-            return redirect()->back()->withErrors($validator->errors())
+            return redirect()->back()->withErrors($validator)
                 ->withInput();
         }
 
-        return redirect()->route("transactions.kpi.index", $validator->validated());
+        return redirect()->route("transactions.kpi.index", $request->all());
 
     }
 
@@ -55,8 +55,8 @@ class TransactionKPIController extends Controller
     {
         return [
             'currency' => ['required', Rule::in($this->currenciesOption())],
-            'date.from' => ['nullable', 'date'],
-            'date.to' => ['nullable', 'date', 'after_or_equal:date.from']
+            'date.from' => ['nullable', 'date', 'required_with:date.to'],
+            'date.to' => ['nullable', 'date', 'after_or_equal:date.from', 'required_with:date.from']
         ];
     }
 
@@ -73,11 +73,7 @@ class TransactionKPIController extends Controller
     protected function getRequestData(array $data): array
     {
 
-        if (!isset($data['currency'])) {
-            $data['currency'] = 'ALL';
-        }
-
-        if (!array_key_exists('currency', $data)) {
+        if ($this->currencyWasNotSelected($data)) {
             $data['currency'] = 'ALL';
         }
 
@@ -97,8 +93,16 @@ class TransactionKPIController extends Controller
     protected function validationMessages(): array
     {
         return [
-            'after_or_equal' => 'You need to select a date equal or after the start date'
+            'after_or_equal' => "You need to select a date equal or after the 'View From' date",
+            'date.from.required_with' => "The 'View To' date is also required since you selected 'View From' date",
+            'date.to.required_with' => "The 'View From' date is also required  since you selected 'View To' date",
         ];
     }
+
+    protected function currencyWasNotSelected(array $data): bool
+    {
+        return !array_key_exists('currency', $data);
+    }
+
 
 }

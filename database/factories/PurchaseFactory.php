@@ -13,7 +13,7 @@ $factory->define(Purchase::class, function (Faker $faker) {
         'totalamount' => $faker->numberBetween(1000, 300000),
         'selar_profit' => $faker->numberBetween(5, 3000),
         'merchant_commission' => $faker->numberBetween(5, 300),
-        'transaction_date' => now(),
+        'transaction_date' => $faker->dateTimeBetween('-1 years', 'now', 'UTC'),
         'currency' => $faker->randomElement(['NGN', 'KES', 'USD', 'GHS']),
         'payment_gateway_commission' => $faker->numberBetween(5, 300) * 0.1,
         'description' => $faker->paragraph,
