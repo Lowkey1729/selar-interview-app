@@ -9,17 +9,20 @@ use Illuminate\Support\Facades\DB;
 
 trait ProductKPITrait
 {
+    use GeneralTrait;
+
     protected function getProducts(array $data)
     {
         $this->setDateIfNotSet($data);
         $to = $data['date']['to'];
         $from = $data['date']['from'];
+        $rawSQLDate = rawSQLDateFormat($data['date']['dateType']);
 
 
         return Product::query()
             ->selectRaw('COUNT(id) as total_new_products')
-            ->when($from || $to, function (Builder $query) use ($from, $to) {
-                $query->whereBetween(DB::raw('DATE(created_at)'), [$from, $to]);
+            ->when($from || $to, function (Builder $query) use ($from, $to, $rawSQLDate) {
+                $query->whereBetween(DB::raw($rawSQLDate), [$from, $to]);
             })
             ->first();
     }
@@ -45,13 +48,4 @@ trait ProductKPITrait
         ];
     }
 
-    protected function setDateIfNotSet(&$data)
-    {
-
-        if (!isset($data['date']['from']) && !isset($data['date']['to'])) {
-            $data['date']['from'] = $data['date']['to'] = Carbon::now();
-        }
-
-
-    }
 }

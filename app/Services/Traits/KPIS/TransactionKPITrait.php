@@ -9,6 +9,8 @@ use Illuminate\Validation\Rule;
 
 trait TransactionKPITrait
 {
+    use GeneralTrait;
+
     /**
      * A list of the accepted rules for validation
      * @return array
@@ -16,7 +18,7 @@ trait TransactionKPITrait
     protected function validationRules(): array
     {
         return [
-            'currency' => ['required', Rule::in($this->currenciesOption())],
+            'currency.*' => ['required', Rule::in($this->currenciesOption())],
             'date.from' => ['nullable', 'date', 'required_with:date.to'],
             'date.to' => ['nullable', 'date', 'after_or_equal:date.from', 'required_with:date.from']
         ];
@@ -29,6 +31,7 @@ trait TransactionKPITrait
      */
     protected function getTransactions(array $data)
     {
+        $this->setDateIfNotSet($data);
         return TransactionVolumeFilter::apply(array_filter($data));
     }
 
@@ -36,7 +39,7 @@ trait TransactionKPITrait
     {
 
         if ($this->currencyWasNotSelected($data)) {
-            $data['currency'] = 'ALL';
+            $data['currency'][0] = 'ALL';
         }
 
         return $data;

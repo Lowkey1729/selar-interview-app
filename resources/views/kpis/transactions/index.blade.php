@@ -22,19 +22,19 @@
                         <div class="grid grid-cols-2 space-x-2">
                             <div class="ml-2">
                                 <x-form.label>Select Currency</x-form.label>
-                                <x-form.select name="currency">
-                                    <option value="ALL">ALL Currencies</option>
-                                    @foreach($currencies as $currency)
-                                        <option
-                                            {{request()->input('currency') == $currency['code'] ? 'selected' : '' }}
-
-                                            value="{{$currency['code']}}">
-
-                                            {{$currency['name']}}
-
-                                        </option>
+                                <div class="grid grid-cols-4">
+                                    @foreach($currencies as $key => $currency)
+                                        <div>
+                                            <input type="checkbox"
+                                                   name="currency[]"
+                                                   {{ in_array($currency['code'], request()->input("currency")?? []) ? 'checked' : '' }}
+                                                   value="{{$currency['code']}}"
+                                                   class="flex  shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm border-gray-300 rounded-lg">
+                                            <label>{{$currency['name']}}</label>
+                                        </div>
                                     @endforeach
-                                </x-form.select>
+                                </div>
+
                             </div>
 
                             <div>
@@ -108,3 +108,4 @@
     </div>
 
 @endsection
+

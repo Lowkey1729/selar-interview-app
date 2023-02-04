@@ -26,7 +26,7 @@ $factory->define(User::class, function (Faker $faker) {
         'username' => $faker->unique()->userName,
         'email' => $faker->unique()->safeEmail,
         'fullname' => sprintf("%s %s", $faker->firstName, $faker->lastName),
-        'created_at' => now(),
-        'updated_at' => now()
+        'created_at' => $faker->dateTimeBetween('-1 years', '+ 1 years'),
+        'updated_at' => $faker->dateTimeBetween('-1 years', '+ 1 years'),
     ];
 });

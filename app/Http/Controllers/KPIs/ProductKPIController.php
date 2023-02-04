@@ -2,16 +2,10 @@
 
 namespace App\Http\Controllers\KPIs;
 
-use App\Currency;
 use App\Http\Controllers\Controller;
-use App\Product;
 use App\Services\Traits\KPIS\ProductKPITrait;
-use Carbon\Carbon;
-use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
-use Illuminate\Validation\Rule;
 
 class ProductKPIController extends Controller
 {

@@ -20,7 +20,7 @@ class Currency implements Filter
 
     protected static function elements($value): array
     {
-        return $value == 'ALL' ? self::currencies() : [$value];
+        return $value[0] == 'ALL' ? self::currencies() : $value;
     }
 
     protected static function currencies(): array

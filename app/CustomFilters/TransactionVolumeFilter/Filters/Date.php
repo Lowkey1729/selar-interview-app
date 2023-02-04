@@ -13,6 +13,7 @@ class Date implements \App\CustomFilters\Filter
      */
     public static function apply(Builder $builder, $value): Builder
     {
-        return $builder->whereBetween(DB::raw('DATE(created_at)'), [$value['from'], $value['to']]);
+        $rawSQLDate = rawSQLDateFormat($value['dateType'], 'transaction_date');
+        return $builder->whereBetween(DB::raw($rawSQLDate), [$value['from'], $value['to']]);
     }
 }

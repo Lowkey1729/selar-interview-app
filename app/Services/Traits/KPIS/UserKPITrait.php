@@ -7,6 +7,8 @@ use Illuminate\Validation\Rule;
 
 trait UserKPITrait
 {
+    use GeneralTrait;
+    
     protected function getUsers(array $data): int
     {
         return User::query()

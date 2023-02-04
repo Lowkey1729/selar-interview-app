@@ -3,18 +3,11 @@
 namespace App\Http\Controllers\KPIs;
 
 use App\Currency;
-use App\CustomFilters\TransactionVolumeFilter\TransactionVolumeFilter;
 use App\Http\Controllers\Controller;
 use App\Services\Traits\KPIS\TransactionKPITrait;
-use Illuminate\Contracts\Foundation\Application;
-use Illuminate\Contracts\View\Factory;
-use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
-use Illuminate\Validation\Rule;
-use Illuminate\View\View;
 
 class TransactionKPIController extends Controller
 {
@@ -32,11 +25,9 @@ class TransactionKPIController extends Controller
      * how much profit we made - this is gotten from the `
      * @param Request $request
      * @return RedirectResponse
-     * @throws \Illuminate\Validation\ValidationException
      */
     public function transactionVolume(Request $request): RedirectResponse
     {
-
         //validate
         $validator = Validator::make($request->all(), $this->validationRules(), $this->validationMessages());
 
