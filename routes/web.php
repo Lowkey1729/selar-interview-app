@@ -48,17 +48,9 @@ Route::prefix('kpis')->group(function () {
         Route::get('/', [UserKPIController::class, 'index'])
             ->name('users.kpi.index');
 
-        Route::get('/unique-sellers', [UserKPIController::class, 'uniqueSellers'])
-            ->name('users.kpi.unique-sellers');
+        Route::get('/all-users', [UserKPIController::class, 'uniqueSellers'])
+            ->name('users.kpi.all-users');
 
-        Route::get('/new-merchants', [UserKPIController::class, 'newMerchants'])
-            ->name('users.kpi.new-merchants');
-
-        Route::get('/new-sellers', [UserKPIController::class, 'newSellers'])
-            ->name('users.kpi.new-sellers');
-
-        Route::get('/new-users', [UserKPIController::class, 'newUsers'])
-            ->name('users.kpi.new-users');
 
     });
 

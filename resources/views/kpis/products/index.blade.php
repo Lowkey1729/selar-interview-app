@@ -23,7 +23,8 @@
 
                             <div>
                                 <x-form.label>View From(Date)</x-form.label>
-                                <x-form.input-date name="date[from]" value="{{request()->input('date.from')}}"/>
+                                <x-form.input-date name="date[from]"
+                                                   value="{{old('date.from') ?? request()->input('date.from')}}"></x-form.input-date>
                                 @error('date.from')
                                 <div class="text-red-600 bg-gray-200 p-2">{{ $message }}</div>
                                 @enderror
@@ -34,7 +35,8 @@
                             <div>
 
                                 <x-form.label>View To(Date)</x-form.label>
-                                <x-form.input-date name="date[to]" value="{{request()->input('date.to')}}"/>
+                                <x-form.input-date name="date[to]"
+                                                   value="{{old('date.from') ?? request()->input('date.to')}}"></x-form.input-date>
 
                                 @error('date.to')
                                 <div class="text-red-600 bg-gray-200 p-2">{{ $message }}</div>
