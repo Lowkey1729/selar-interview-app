@@ -4,12 +4,14 @@ namespace App\Http\Controllers\KPIs;
 
 use App\Http\Controllers\Controller;
 use App\Services\Traits\KPIS\ProductKPITrait;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 
 class ProductKPIController extends Controller
 {
     use ProductKPITrait;
+
     public function index(Request $request)
     {
         $products = $this->getProducts($request->all());
@@ -19,9 +21,9 @@ class ProductKPIController extends Controller
     /**
      * a count of new products added to the table.
      * @param Request $request
-     * @return \Illuminate\Http\RedirectResponse
+     * @return RedirectResponse
      */
-    public function totalProducts(Request $request): \Illuminate\Http\RedirectResponse
+    public function totalProducts(Request $request): RedirectResponse
     {
         //validate
         $validator = Validator::make($request->all(), $this->validationRules(), $this->validationMessages());

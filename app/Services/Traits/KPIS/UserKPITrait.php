@@ -8,8 +8,8 @@ use Illuminate\Validation\Rule;
 trait UserKPITrait
 {
     use GeneralTrait;
-    
-    protected function getUsers(array $data): int
+
+    protected function getUsers(array $data)
     {
         return User::query()
             ->selectRaw("COUNT(id) as allUsers")
@@ -34,8 +34,9 @@ trait UserKPITrait
      */
     protected function validationRules(): array
     {
+        $userCategories = array_keys($this->userCategories());
         return [
-            'user_category' => ['required', Rule::in($this->userCategories())],
+            'user_category.*' => ['required', Rule::in($userCategories)],
             'date.from' => ['nullable', 'date', 'required_with:date.to'],
             'date.to' => ['nullable', 'date', 'after_or_equal:date.from', 'required_with:date.from']
         ];
@@ -43,7 +44,11 @@ trait UserKPITrait
 
     protected function userCategories(): array
     {
-        return ['allUsers', 'uniqueSellers', 'newSellers', 'newMerchants'];
+        return [
+            'allUsers' => 'All Users',
+            'uniqueSellers' => 'Unique Sellers',
+            'newSellers' => 'New Sellers',
+            'newMerchants' => 'New Merchants'];
 
     }
 
@@ -51,7 +56,7 @@ trait UserKPITrait
     {
 
         if ($this->userCategoryWasNotSet($data)) {
-            $data['user_category'] = 'allUsers';
+            $data['user_category'][0] = 'allUsers';
         }
 
         return $data;
@@ -61,4 +66,8 @@ trait UserKPITrait
     {
         return !array_key_exists('user_category', $data);
     }
+
+
+
+
 }

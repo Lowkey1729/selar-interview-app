@@ -48,7 +48,7 @@ Route::prefix('kpis')->group(function () {
         Route::get('/', [UserKPIController::class, 'index'])
             ->name('users.kpi.index');
 
-        Route::get('/all-users', [UserKPIController::class, 'uniqueSellers'])
+        Route::get('/all-users', [UserKPIController::class, 'totalUsers'])
             ->name('users.kpi.all-users');
 
 

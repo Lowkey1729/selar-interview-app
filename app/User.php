@@ -57,12 +57,14 @@ class User extends Authenticatable
      */
     public function scopeCountUniqueSellers(Builder $query, array $data): Builder
     {
-        return $query->addSelect([
-            'newSellers' => Purchase::query()
-                ->selectRaw('HAVING COUNT(id) >= 1')
-                ->whereColumn('merchant_id', 'users.id')
+        return $query->when(in_array('uniqueSellers', $data['user_category']), function (Builder $query) {
+            $query->addSelect([
+                'uniqueSellers' => Purchase::query()
+                    ->selectRaw('HAVING COUNT(id) >= 1')
+                    ->whereColumn('merchant_id', 'users.id')
 
-        ]);
+            ]);
+        });
     }
 
     /**
@@ -73,12 +75,14 @@ class User extends Authenticatable
      */
     public function scopeCountNewSellers(Builder $query, array $data): Builder
     {
-        return $query->addSelect([
-            'newSellers' => Purchase::query()
-                ->selectRaw('HAVING COUNT(id) == 1')
-                ->whereColumn('merchant_id', 'users.id')
+        return $query->when(in_array('newSellers', $data['user_category']), function (Builder $query) {
+            $query->addSelect([
+                'newSellers' => Purchase::query()
+                    ->selectRaw('HAVING COUNT(id) == 1')
+                    ->whereColumn('merchant_id', 'users.id')
 
-        ]);
+            ]);
+        });
     }
 
     /**
@@ -90,11 +94,13 @@ class User extends Authenticatable
      */
     public function scopeCountNewMerchants(Builder $query, array $data): Builder
     {
-        return $query->addSelect([
-            'newSellers' => Product::query()
-                ->selectRaw('HAVING COUNT(id) == 1')
-                ->whereColumn('merchant_id', 'users.id')
+        return $query->when(in_array('newMerchants', $data['user_category']), function (Builder $query) {
+            $query->addSelect([
+                'newMerchants' => Product::query()
+                    ->selectRaw('HAVING COUNT(id) == 1')
+                    ->whereColumn('merchant_id', 'users.id')
 
-        ]);
+            ]);
+        });
     }
 }

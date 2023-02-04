@@ -17,14 +17,24 @@
         <div class="bg-white shadow-md  w-full sm:rounded-lg sm:overflow-hidden">
             <div class="px-1 pb-8 pt-6">
                 <div class="mt-4  p-1 pt-0">
-                    <form class="space-y-6" method="GET" action="{{route('transactions.kpi.volume')}}">
+                    <form class="space-y-6" method="GET" action="{{route('users.kpi.all-users')}}">
                         @csrf
                         <div class="grid grid-cols-2 space-x-2">
                             <div class="ml-2">
-                                <x-form.label>Select Category</x-form.label>
-                                <x-form.select name="currency">
-                                    <option value="ALL">ALL Categories</option>
-                                </x-form.select>
+                                <x-form.label>Select User Category</x-form.label>
+                                <div class="grid grid-cols-4 mt-1">
+                                    @foreach($userCategories as $userCategoryValue => $userCategoryTitle)
+                                        <div>
+                                            <input type="checkbox"
+                                                   name="user_category[]"
+                                                   {{ in_array($userCategoryValue, request()->input("user_category") ?? old('user_category') ?? []) ? 'checked' : '' }}
+                                                   value="{{$userCategoryValue}}"
+                                                   class="flex  shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm border-gray-300 rounded-lg">
+                                            <label>{{$userCategoryTitle}}</label>
+                                        </div>
+                                    @endforeach
+                                </div>
+
                             </div>
 
                             <div>
