@@ -13,6 +13,7 @@ trait UserKPITrait
     protected function getUsers(array $data): array
     {
         $newData = [];
+        $this->setDateIfNotSet($data);
         $this->selectCountBasedOnFilter($data, $newData);
         return $newData;
     }

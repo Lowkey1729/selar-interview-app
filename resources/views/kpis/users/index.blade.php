@@ -4,9 +4,14 @@
 
     <div class="my-8 pl-2">
         <div>
-            <h2 class="my-4 font-medium">Transaction KPIs</h2>
-            @if(request()->hasAny(['currency', 'date.to', 'date.from']))
-                <a href="{{route('transactions.kpi.index')}}" class="max-w-lg flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm
+            @if(request()->hasAny(['date.to', 'date.from']))
+                <h2 class="my-4 font-medium">Transaction KPIs for
+                    <b>{{request()->input('date.from') ."<-->".  request()->input('date.to')}}</b></h2>
+            @else
+                <h2 class="my-4 font-medium">Transaction KPIs for the month of <b>{{date('F')}}</b></h2>
+            @endif
+            @if(request()->hasAny(['user_category', 'date.to', 'date.from']))
+                <a href="{{route('users.kpi.index')}}" class="max-w-lg flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm
                 text-sm font-medium text-white bg-gray-600 hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500">
                     Reset Filter
                 </a>

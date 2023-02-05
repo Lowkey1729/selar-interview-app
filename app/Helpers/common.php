@@ -53,3 +53,21 @@ if (!function_exists('userCategoryTitle')) {
         }
     }
 }
+
+if (!function_exists('pickDate')) {
+    function pickDate($dateType)
+    {
+        switch ($dateType) {
+            case "week":
+                return date('w');
+            case "month":
+                return date('m');
+            case "year":
+                return date('y');
+            default:
+                return date('Y-m-d');
+
+
+        }
+    }
+}

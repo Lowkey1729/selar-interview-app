@@ -4,7 +4,13 @@
 
     <div class="my-8 pl-2">
         <div>
-            <h2 class="my-4 font-medium">Product KPIs</h2>
+            @if(request()->hasAny(['date.to', 'date.from']))
+                <h2 class="my-4 font-medium">Transaction KPIs for
+                    <b>{{request()->input('date.from') ."<-->".  request()->input('date.to')}}</b></h2>
+            @else
+                <h2 class="my-4 font-medium">Transaction KPIs for the month of <b>{{date('F')}}</b></h2>
+            @endif
+            
             @if(request()->hasAny([ 'date.to', 'date.from']))
                 <a href="{{route('products.kpi.index')}}" class="max-w-lg flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm
                 text-sm font-medium text-white bg-gray-600 hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500">
@@ -36,7 +42,7 @@
 
                                 <x-form.label>View To(Date)</x-form.label>
                                 <x-form.input-date name="date[to]"
-                                                   value="{{old('date.from') ?? request()->input('date.to')}}"></x-form.input-date>
+                                                   value="{{old('date.to') ?? request()->input('date.to')}}"></x-form.input-date>
 
                                 @error('date.to')
                                 <div class="text-red-600 bg-gray-200 p-2">{{ $message }}</div>

@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Support\Facades\DB;
 
 class User extends Authenticatable
 {
@@ -57,7 +58,14 @@ class User extends Authenticatable
      */
     public function scopeCountAllUsers(Builder $query, array $data): int
     {
+        $from = $data['date']['from'];
+        $to = $data['date']['to'];
+        $rawSQLDate = rawSQLDateFormat($data['date']['dateType'], 'users.created_at');
+
         return $query->selectRaw('count(users.id) as allUsers')
+            ->when(true, function (Builder $query) use ($rawSQLDate, $from, $to) {
+                $query->whereBetween(DB::raw($rawSQLDate), [$from, $to]);
+            })
             ->count();
     }
 
@@ -70,10 +78,16 @@ class User extends Authenticatable
      */
     public function scopeCountUniqueSellers(Builder $query, array $data): int
     {
+        $from = $data['date']['from'];
+        $to = $data['date']['to'];
+        $rawSQLDate = rawSQLDateFormat($data['date']['dateType'], 'purchases.transaction_date');
         $result =
             $query
                 ->join('purchases', 'users.id', '=', 'purchases.merchant_id')
                 ->selectRaw('purchases.merchant_id, count(*) as newSellers')
+                ->when(true, function (Builder $query) use ($rawSQLDate, $from, $to) {
+                    $query->whereBetween(DB::raw($rawSQLDate), [$from, $to]);
+                })
                 ->groupBy('users.id')
                 ->havingRaw('count(purchases.id) >= 1')
                 ->get();
@@ -90,10 +104,16 @@ class User extends Authenticatable
      */
     public function scopeCountNewSellers(Builder $query, array $data): int
     {
+        $from = $data['date']['from'];
+        $to = $data['date']['to'];
+        $rawSQLDate = rawSQLDateFormat($data['date']['dateType'], 'purchases.transaction_date');
 
         $result = $query
             ->join('purchases', 'users.id', '=', 'purchases.merchant_id')
             ->selectRaw('purchases.merchant_id, count(*) as newSellers')
+            ->when(true, function (Builder $query) use ($rawSQLDate, $from, $to) {
+                $query->whereBetween(DB::raw($rawSQLDate), [$from, $to]);
+            })
             ->groupBy('users.id')
             ->havingRaw('count(purchases.id) = 1')
             ->get();
@@ -111,10 +131,16 @@ class User extends Authenticatable
      */
     public function scopeCountNewMerchants(Builder $query, array $data): int
     {
+        $from = $data['date']['from'];
+        $to = $data['date']['to'];
+        $rawSQLDate = rawSQLDateFormat($data['date']['dateType'], 'products.created_at');
 
         $result = $query
             ->join('products', 'products.merchant_id', '=', 'users.id')
             ->selectRaw('products.merchant_id, count(*) as newMerchants')
+            ->when(true, function (Builder $query) use ($rawSQLDate, $from, $to) {
+                $query->whereBetween(DB::raw($rawSQLDate), [$from, $to]);
+            })
             ->groupBy('users.id')
             ->havingRaw('count(products.id) = 1')
             ->get();
