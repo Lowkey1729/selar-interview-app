@@ -73,10 +73,11 @@ class User extends Authenticatable
         $result =
             $query
                 ->join('purchases', 'users.id', '=', 'purchases.merchant_id')
-                ->selectRaw('count(DISTINCT purchases.merchant_id) as uniqueSellers')
+                ->selectRaw('purchases.merchant_id, count(*) as newSellers')
+                ->groupBy('users.id')
                 ->havingRaw('count(purchases.id) >= 1')
-                ->first();
-        return $result ? $result->uniqueSellers : 0;
+                ->get();
+        return count($result);
 
 
     }
@@ -92,10 +93,12 @@ class User extends Authenticatable
 
         $result = $query
             ->join('purchases', 'users.id', '=', 'purchases.merchant_id')
-            ->selectRaw('count(DISTINCT purchases.merchant_id) as newSellers')
+            ->selectRaw('purchases.merchant_id, count(*) as newSellers')
+            ->groupBy('users.id')
             ->havingRaw('count(purchases.id) = 1')
-            ->first();
-        return $result ? $result->newSellers : 0;
+            ->get();
+
+        return count($result);
 
     }
 
@@ -110,11 +113,14 @@ class User extends Authenticatable
     {
 
         $result = $query
-            ->join('products', 'users.id', '=', 'products.merchant_id')
-            ->selectRaw('count(DISTINCT products.merchant_id) as newMerchants')
-            ->havingRaw('count(products.id) >= 1')
-            ->first();
-        return $result ? $result->newMerchants : 0;
+            ->join('products', 'products.merchant_id', '=', 'users.id')
+            ->selectRaw('products.merchant_id, count(*) as newMerchants')
+            ->groupBy('users.id')
+            ->havingRaw('count(products.id) = 1')
+            ->get();
+
+        return count($result);
+
 
     }
 }
