@@ -50,39 +50,53 @@ class User extends Authenticatable
     }
 
     /**
+     * number of users available in the system
+     * @param Builder $query
+     * @param array $data
+     * @return int
+     */
+    public function scopeCountAllUsers(Builder $query, array $data): int
+    {
+        return $query->selectRaw('count(users.id) as allUsers')
+            ->count();
+    }
+
+
+    /**
      * number of merchants with at least one sale in a particular time frame.
      * @param Builder $query
      * @param array $data
-     * @return Builder
+     * @return int
      */
-    public function scopeCountUniqueSellers(Builder $query, array $data): Builder
+    public function scopeCountUniqueSellers(Builder $query, array $data): int
     {
-        return $query->when(in_array('uniqueSellers', $data['user_category']), function (Builder $query) {
-            $query->addSelect([
-                'uniqueSellers' => Purchase::query()
-                    ->selectRaw('HAVING COUNT(id) >= 1')
-                    ->whereColumn('merchant_id', 'users.id')
+        $result =
+            $query
+                ->join('purchases', 'users.id', '=', 'purchases.merchant_id')
+                ->selectRaw('count(DISTINCT purchases.merchant_id) as uniqueSellers')
+                ->havingRaw('count(purchases.id) >= 1')
+                ->first();
+        return $result ? $result->uniqueSellers : 0;
 
-            ]);
-        });
+
     }
 
     /**
      * number of merchants that made their first sale in a particular time frame
      * @param Builder $query
      * @param array $data
-     * @return Builder
+     * @return int
      */
-    public function scopeCountNewSellers(Builder $query, array $data): Builder
+    public function scopeCountNewSellers(Builder $query, array $data): int
     {
-        return $query->when(in_array('newSellers', $data['user_category']), function (Builder $query) {
-            $query->addSelect([
-                'newSellers' => Purchase::query()
-                    ->selectRaw('HAVING COUNT(id) == 1')
-                    ->whereColumn('merchant_id', 'users.id')
 
-            ]);
-        });
+        $result = $query
+            ->join('purchases', 'users.id', '=', 'purchases.merchant_id')
+            ->selectRaw('count(DISTINCT purchases.merchant_id) as newSellers')
+            ->havingRaw('count(purchases.id) = 1')
+            ->first();
+        return $result ? $result->newSellers : 0;
+
     }
 
     /**
@@ -90,17 +104,17 @@ class User extends Authenticatable
      * so a new merchant is a user that added their first product in that particular time frame.
      * @param Builder $query
      * @param array $data
-     * @return Builder
+     * @return int
      */
-    public function scopeCountNewMerchants(Builder $query, array $data): Builder
+    public function scopeCountNewMerchants(Builder $query, array $data): int
     {
-        return $query->when(in_array('newMerchants', $data['user_category']), function (Builder $query) {
-            $query->addSelect([
-                'newMerchants' => Product::query()
-                    ->selectRaw('HAVING COUNT(id) == 1')
-                    ->whereColumn('merchant_id', 'users.id')
 
-            ]);
-        });
+        $result = $query
+            ->join('products', 'users.id', '=', 'products.merchant_id')
+            ->selectRaw('count(DISTINCT products.merchant_id) as newMerchants')
+            ->havingRaw('count(products.id) >= 1')
+            ->first();
+        return $result ? $result->newMerchants : 0;
+
     }
 }

@@ -35,3 +35,21 @@ if (!function_exists('rawSQLDateFormat')) {
         }
     }
 }
+
+if (!function_exists('userCategoryTitle')) {
+    function userCategoryTitle(string $userCategory): string
+    {
+        switch ($userCategory) {
+            case "allUsers":
+                return 'All Users';
+            case "newMerchants":
+                return "New Merchants";
+            case "newSellers":
+                return "New Sellers";
+            case "uniqueSellers":
+                return "Unique Sellers";
+            default:
+                return "No Title set";
+        }
+    }
+}

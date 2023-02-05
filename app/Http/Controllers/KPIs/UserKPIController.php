@@ -13,9 +13,10 @@ class UserKPIController extends Controller
 
     public function index(Request $request)
     {
-        $users = $this->getUsers($this->getRequestData($request->all()));
+        $userCategoryCount = $this->getUsers($this->getRequestData($request->all()));
+
         $userCategories = $this->userCategories();
-        return view('kpis.users.index', compact('users', 'userCategories'));
+        return view('kpis.users.index', compact('userCategoryCount', 'userCategories'));
     }
 
     public function totalUsers(Request $request): \Illuminate\Http\RedirectResponse

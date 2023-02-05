@@ -82,15 +82,16 @@
     <div>
 
         <div class="grid sm:grid-cols-3 gap-6">
-            @forelse($users as $user)
+
+            @forelse($userCategoryCount as $userCategoryKey => $_userCategoryCount)
                 <span
                     class="col-span-1 bg-blue-600 rounded-lg hover:bg-blue-700 md:hover:cursor-pointer transition duration-300">
             <div class="py-8 px-6">
               <div>
-                    <p class="text-gray-300 text-center">Total Products</p>
+                    <p class="text-gray-300 text-center">{{userCategoryTitle($userCategoryKey)}}</p>
                 </div>
                 <div class="mt-3 mb-1 text-white font-semibold text-xl">
-                   <p>Total : {{$user['total_new_products']}}</p>
+                   <p>Total : {{$_userCategoryCount}}</p>
                 </div>
 
             </div>

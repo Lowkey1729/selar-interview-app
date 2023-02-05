@@ -3,20 +3,18 @@
 namespace App\Services\Traits\KPIS;
 
 use App\User;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Validation\Rule;
 
 trait UserKPITrait
 {
     use GeneralTrait;
 
-    protected function getUsers(array $data)
+    protected function getUsers(array $data): array
     {
-        return User::query()
-            ->selectRaw("COUNT(id) as allUsers")
-            ->countUniqueSellers($data)
-            ->countNewSellers($data)
-            ->countNewMerchants($data)
-            ->get();
+        $newData = [];
+        $this->selectCountBasedOnFilter($data, $newData);
+        return $newData;
     }
 
     protected function validationMessages(): array
@@ -67,7 +65,32 @@ trait UserKPITrait
         return !array_key_exists('user_category', $data);
     }
 
+    protected function selectCountBasedOnFilter(array $data, array &$newData)
+    {
 
+        if (in_array('allUsers', $data['user_category'])) {
+            $newData['allUsers'] = User::query()
+                ->countAllUsers($data);
+        }
+
+
+        if (in_array('newSellers', $data['user_category'])) {
+            $newData['newSellers'] = User::query()
+                ->countNewSellers($data);
+        }
+
+        if (in_array('newMerchants', $data['user_category'])) {
+            $newData['newMerchants'] = User::query()
+                ->countNewMerchants($data);
+        }
+
+        if (in_array('uniqueSellers', $data['user_category'])) {
+            $newData['uniqueSellers'] = User::query()
+                ->countUniqueSellers($data);
+        }
+
+
+    }
 
 
 }
