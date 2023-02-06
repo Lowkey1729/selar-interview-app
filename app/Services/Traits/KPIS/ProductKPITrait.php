@@ -21,14 +21,12 @@ trait ProductKPITrait
         $this->setDateIfNotSet($data);
         $to = $data['date']['to'];
         $from = $data['date']['from'];
-        $rawSQLDate = rawSQLDateFormat($data['date']['dateType']);
+        $dateType = $data['date']['dateType'];
 
 
         return Product::query()
             ->selectRaw('COUNT(id) as total_new_products')
-            ->when($from || $to, function (Builder $query) use ($from, $to, $rawSQLDate) {
-                $query->whereBetween(DB::raw($rawSQLDate), [$from, $to]);
-            })
+            ->filterDateQuery($from, $to, $dateType, 'created_at')
             ->first();
     }
 

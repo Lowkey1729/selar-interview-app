@@ -14,6 +14,7 @@ class Date implements \App\CustomFilters\Filter
     public static function apply(Builder $builder, $value): Builder
     {
         $rawSQLDate = rawSQLDateFormat($value['dateType'], 'transaction_date');
-        return $builder->whereBetween(DB::raw($rawSQLDate), [$value['from'], $value['to']]);
+        return $value['dateType'] == 'days' ? $builder->whereBetween(DB::raw($rawSQLDate), [$value['from'], $value['to']])
+            : $builder->whereRaw($rawSQLDate . " = ? AND YEAR(transaction_date) = ?", [$value['from'], date('Y')]);
     }
 }
