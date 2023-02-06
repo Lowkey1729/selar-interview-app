@@ -14,7 +14,7 @@ class ConvertAPI
      */
     protected function baseUrl(): string
     {
-        return "https://community-neutrino-currency-conversion.p.rapidapi.com";
+        return "https://api.apilayer.com/fixer";
     }
 
     /**
@@ -23,8 +23,7 @@ class ConvertAPI
     protected function getCredentials(): array
     {
         return [
-            'apiKey' => '300d93db91mshc298994e5ee8ccap1df2b5jsne40e281ebb22',
-            'host' => 'community-neutrino-currency-conversion.p.rapidapi.com'
+            'apiKey' => '5pMoXBjT0ksmAjy57WD9ja1ynqKNTIqR',
         ];
     }
 
@@ -35,8 +34,7 @@ class ConvertAPI
     {
         return [
             'content-type' => 'application/json',
-            'X-RapidAPI-Key' => $this->getCredentials()['apiKey'],
-            'X-RapidAPI-Host' => $this->getCredentials()['host']
+            'apiKey' => $this->getCredentials()['apiKey'],
         ];
     }
 
@@ -49,12 +47,12 @@ class ConvertAPI
     public function convertCurrency($currencyValue, $currencyFrom, $currencyTo): array
     {
 
-        $apiKey = $this->getCredentials()['apiKey'];
-        $url = sprintf("%s%s?=%s", $this->baseUrl(), self::CONVERT_CURRENCY, $apiKey);
-        return $this->post($url, [
-            'from-value' => $currencyValue,
-            'from-type' => $currencyFrom,
-            'to-type' => $currencyTo
+        $url = sprintf("%s%s", $this->baseUrl(),
+            self::CONVERT_CURRENCY);
+        return $this->get($url, [
+            'from' => $currencyFrom,
+            'to' => $currencyTo,
+            'amount' => $currencyValue
         ]);
 
 
@@ -76,7 +74,7 @@ class ConvertAPI
      * @param array $payload
      * @return array
      */
-    protected function get(string $url, array $payload): array
+    protected function get(string $url, array $payload = []): array
     {
         $res = Http::withHeaders($this->headers())->get($url, $payload);
         return $this->response($res);
@@ -84,7 +82,6 @@ class ConvertAPI
 
     protected function response(Response $response)
     {
-        
         return $response->ok() && $response->json()
             ? $response->json()
             : [];

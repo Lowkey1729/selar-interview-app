@@ -8,11 +8,15 @@ trait GeneralTrait
 {
     protected function setDateIfNotSet(&$data)
     {
-        $data['date']['dateType'] = 'days';
+
 
         if (!isset($data['date']['from']) && !isset($data['date']['to'])) {
             $data['date']['dateType'] = 'month';
             $data['date']['from'] = $data['date']['to'] = pickDate('month');
+        } else {
+            $data['date']['dateType'] = 'days';
+            $data['date']['from'] = Carbon::parse($data['date']['from']);
+            $data['date']['to'] = Carbon::parse($data['date']['to']);
         }
 
     }

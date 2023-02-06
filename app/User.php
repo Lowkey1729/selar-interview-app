@@ -60,12 +60,10 @@ class User extends Authenticatable
     {
         $from = $data['date']['from'];
         $to = $data['date']['to'];
-        $rawSQLDate = rawSQLDateFormat($data['date']['dateType'], 'users.created_at');
+        $dateType = $data['date']['dateType'];
 
         return $query->selectRaw('count(users.id) as allUsers')
-            ->when(true, function (Builder $query) use ($rawSQLDate, $from, $to) {
-                $query->whereBetween(DB::raw($rawSQLDate), [$from, $to]);
-            })
+            ->filterDateQuery($from, $to, $dateType, 'users.created_at')
             ->count();
     }
 
@@ -80,14 +78,13 @@ class User extends Authenticatable
     {
         $from = $data['date']['from'];
         $to = $data['date']['to'];
-        $rawSQLDate = rawSQLDateFormat($data['date']['dateType'], 'purchases.transaction_date');
+        $dateType = $data['date']['dateType'];
         $result =
             $query
                 ->join('purchases', 'users.id', '=', 'purchases.merchant_id')
-                ->selectRaw('purchases.merchant_id, count(*) as newSellers')
-                ->when(true, function (Builder $query) use ($rawSQLDate, $from, $to) {
-                    $query->whereBetween(DB::raw($rawSQLDate), [$from, $to]);
-                })
+                ->selectRaw('purchases.merchant_id, count(*) as uniqueSellers')
+                ->where('purchases.status', 'paid')
+                ->filterDateQuery($from, $to, $dateType, 'purchases.transaction_date')
                 ->groupBy('users.id')
                 ->havingRaw('count(purchases.id) >= 1')
                 ->get();
@@ -106,14 +103,12 @@ class User extends Authenticatable
     {
         $from = $data['date']['from'];
         $to = $data['date']['to'];
-        $rawSQLDate = rawSQLDateFormat($data['date']['dateType'], 'purchases.transaction_date');
+        $dateType = $data['date']['dateType'];
 
         $result = $query
             ->join('purchases', 'users.id', '=', 'purchases.merchant_id')
             ->selectRaw('purchases.merchant_id, count(*) as newSellers')
-            ->when(true, function (Builder $query) use ($rawSQLDate, $from, $to) {
-                $query->whereBetween(DB::raw($rawSQLDate), [$from, $to]);
-            })
+            ->filterDateQuery($from, $to, $dateType, 'purchases.transaction_date')
             ->groupBy('users.id')
             ->havingRaw('count(purchases.id) = 1')
             ->get();
@@ -133,20 +128,29 @@ class User extends Authenticatable
     {
         $from = $data['date']['from'];
         $to = $data['date']['to'];
-        $rawSQLDate = rawSQLDateFormat($data['date']['dateType'], 'products.created_at');
+        $dateType = $data['date']['dateType'];
+
 
         $result = $query
             ->join('products', 'products.merchant_id', '=', 'users.id')
             ->selectRaw('products.merchant_id, count(*) as newMerchants')
-            ->when(true, function (Builder $query) use ($rawSQLDate, $from, $to) {
-                $query->whereBetween(DB::raw($rawSQLDate), [$from, $to]);
-            })
+            ->filterDateQuery($from, $to, $dateType, 'products.created_at')
             ->groupBy('users.id')
             ->havingRaw('count(products.id) = 1')
             ->get();
 
+
         return count($result);
 
 
+    }
+
+    public function scopeFilterDateQuery(Builder $query, $from, $to, $dateType, $column)
+    {
+        $rawSQLDate = rawSQLDateFormat($dateType, $column);
+        return $query->when($from || $to, function (Builder $query) use ($rawSQLDate, $from, $to, $dateType, $column) {
+            $dateType == 'days' ? $query->whereBetween(DB::raw($rawSQLDate), [$from, $to])
+                : $query->whereRaw($rawSQLDate . " = ? AND YEAR({$column}) = ?", [$from, date('Y')]);
+        });
     }
 }

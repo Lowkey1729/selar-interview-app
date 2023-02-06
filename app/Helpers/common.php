@@ -1,6 +1,13 @@
 <?php
 
+use Illuminate\Support\Facades\DB;
+use Illuminate\Database\Eloquent\Builder;
+
 if (!function_exists('currencyTitle')) {
+    /**
+     * @param string $currency
+     * @return string
+     */
     function currencyTitle(string $currency): string
     {
         switch ($currency) {
@@ -19,6 +26,11 @@ if (!function_exists('currencyTitle')) {
 }
 
 if (!function_exists('rawSQLDateFormat')) {
+    /**
+     * @param string $dateType
+     * @param string $column
+     * @return string
+     */
     function rawSQLDateFormat(string $dateType, string $column = 'created_at'): string
     {
         switch ($dateType) {
@@ -37,6 +49,10 @@ if (!function_exists('rawSQLDateFormat')) {
 }
 
 if (!function_exists('userCategoryTitle')) {
+    /**
+     * @param string $userCategory
+     * @return string
+     */
     function userCategoryTitle(string $userCategory): string
     {
         switch ($userCategory) {
@@ -54,7 +70,14 @@ if (!function_exists('userCategoryTitle')) {
     }
 }
 
+
+
+
 if (!function_exists('pickDate')) {
+    /**
+     * @param $dateType
+     * @return false|string
+     */
     function pickDate($dateType)
     {
         switch ($dateType) {
@@ -73,6 +96,10 @@ if (!function_exists('pickDate')) {
 }
 
 if (!function_exists('averageNairaValue')) {
+    /**
+     * @param $transactions
+     * @return float
+     */
     function averageNairaValue($transactions): float
     {
         try {
@@ -87,17 +114,17 @@ if (!function_exists('averageNairaValue')) {
                     case 'USD' :
                         $convert = new \App\ExternalAPIs\CurrencyConverters\ConvertAPI();
                         $totalSales = $transaction['total_amount_of_sales'];
-                        $totalProfits = $convert->convertCurrency($transaction['profits'], 'USD', 'NGN')['result-float'];
+                        $totalProfits = $convert->convertCurrency($transaction['profits'], 'USD', 'NGN')['result'];
                         break;
                     case 'KES' :
                         $convert = new \App\ExternalAPIs\CurrencyConverters\ConvertAPI();
                         $totalSales = $transaction['total_amount_of_sales'];
-                        $totalProfits = $convert->convertCurrency($transaction['profits'], 'KES', 'NGN')['result-float'];
+                        $totalProfits = $convert->convertCurrency($transaction['profits'], 'KES', 'NGN')['result'];
                         break;
                     case 'GHS' :
                         $convert = new \App\ExternalAPIs\CurrencyConverters\ConvertAPI();
                         $totalSales = $transaction['total_amount_of_sales'];
-                        $totalProfits = $convert->convertCurrency($transaction['profits'], 'GHS', 'NGN')['result-float'];
+                        $totalProfits = $convert->convertCurrency($transaction['profits'], 'GHS', 'NGN')['result'];
                         break;
                     default:
                         $totalSales = 0;
