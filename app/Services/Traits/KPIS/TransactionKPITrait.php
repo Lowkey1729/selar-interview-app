@@ -45,6 +45,9 @@ trait TransactionKPITrait
         return $data;
     }
 
+    /**
+     * @return string[]
+     */
     protected function currenciesOption(): array
     {
         return [
@@ -55,6 +58,9 @@ trait TransactionKPITrait
             'ALL'];
     }
 
+    /**
+     * @return string[]
+     */
     protected function validationMessages(): array
     {
         return [

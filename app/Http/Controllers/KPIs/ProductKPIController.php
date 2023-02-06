@@ -12,6 +12,10 @@ class ProductKPIController extends Controller
 {
     use ProductKPITrait;
 
+    /**
+     * @param Request $request
+     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     */
     public function index(Request $request)
     {
         $products = $this->getProducts($request->all());

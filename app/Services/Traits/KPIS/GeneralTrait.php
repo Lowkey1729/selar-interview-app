@@ -6,6 +6,10 @@ use Carbon\Carbon;
 
 trait GeneralTrait
 {
+    /**
+     * @param $data
+     * @return void
+     */
     protected function setDateIfNotSet(&$data)
     {
 

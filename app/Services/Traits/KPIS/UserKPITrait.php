@@ -10,14 +10,21 @@ trait UserKPITrait
 {
     use GeneralTrait;
 
+    /**
+     * @param array $data
+     * @return array
+     */
     protected function getUsers(array $data): array
     {
         $newData = [];
         $this->setDateIfNotSet($data);
-        $this->selectCountBasedOnFilter($data, $newData);
+        $this->selectCategoryCountBasedOnFilter($data, $newData);
         return $newData;
     }
 
+    /**
+     * @return string[]
+     */
     protected function validationMessages(): array
     {
         return [
@@ -41,6 +48,9 @@ trait UserKPITrait
         ];
     }
 
+    /**
+     * @return string[]
+     */
     protected function userCategories(): array
     {
         return [
@@ -51,6 +61,10 @@ trait UserKPITrait
 
     }
 
+    /**
+     * @param array $data
+     * @return array
+     */
     protected function getRequestData(array $data): array
     {
 
@@ -61,12 +75,21 @@ trait UserKPITrait
         return $data;
     }
 
+    /**
+     * @param array $data
+     * @return bool
+     */
     protected function userCategoryWasNotSet(array $data): bool
     {
         return !array_key_exists('user_category', $data);
     }
 
-    protected function selectCountBasedOnFilter(array $data, array &$newData)
+    /**
+     * @param array $data
+     * @param array $newData
+     * @return void
+     */
+    protected function selectCategoryCountBasedOnFilter(array $data, array &$newData)
     {
 
         if (in_array('allUsers', $data['user_category'])) {

@@ -5,12 +5,17 @@ namespace App\Services\Traits\KPIS;
 use App\Product;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\DB;
 
 trait ProductKPITrait
 {
     use GeneralTrait;
 
+    /**
+     * @param array $data
+     * @return Builder|Model|mixed|object|null
+     */
     protected function getProducts(array $data)
     {
         $this->setDateIfNotSet($data);
@@ -27,6 +32,9 @@ trait ProductKPITrait
             ->first();
     }
 
+    /**
+     * @return string[]
+     */
     protected function validationMessages(): array
     {
         return [

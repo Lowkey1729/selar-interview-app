@@ -5,14 +5,21 @@ namespace App\Http\Controllers\KPIs;
 use App\Currency;
 use App\Http\Controllers\Controller;
 use App\Services\Traits\KPIS\TransactionKPITrait;
+use Illuminate\Contracts\Foundation\Application;
+use Illuminate\Contracts\View\Factory;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\View\View;
 
 class TransactionKPIController extends Controller
 {
     use TransactionKPITrait;
 
+    /**
+     * @param Request $request
+     * @return Application|Factory|View
+     */
     public function index(Request $request)
     {
         $transactions = $this->getTransactions($this->getRequestData($request->all()));
