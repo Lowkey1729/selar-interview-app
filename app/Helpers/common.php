@@ -71,3 +71,44 @@ if (!function_exists('pickDate')) {
         }
     }
 }
+
+if (!function_exists('averageNairaValue')) {
+    function averageNairaValue($transactions): float
+    {
+        try {
+            $totalSales = 0;
+            $totalProfits = 0;
+            foreach ($transactions as $transaction) {
+                switch ($transaction['currency']) {
+                    case 'NGN' :
+                        $totalSales = $transaction['total_amount_of_sales'];
+                        $totalProfits = $transaction['profits'];
+                        break;
+                    case 'USD' :
+                        $convert = new \App\ExternalAPIs\CurrencyConverters\ConvertAPI();
+                        $totalSales = $transaction['total_amount_of_sales'];
+                        $totalProfits = $convert->convertCurrency($transaction['profits'], 'USD', 'NGN')['result-float'];
+                        break;
+                    case 'KES' :
+                        $convert = new \App\ExternalAPIs\CurrencyConverters\ConvertAPI();
+                        $totalSales = $transaction['total_amount_of_sales'];
+                        $totalProfits = $convert->convertCurrency($transaction['profits'], 'KES', 'NGN')['result-float'];
+                        break;
+                    case 'GHS' :
+                        $convert = new \App\ExternalAPIs\CurrencyConverters\ConvertAPI();
+                        $totalSales = $transaction['total_amount_of_sales'];
+                        $totalProfits = $convert->convertCurrency($transaction['profits'], 'GHS', 'NGN')['result-float'];
+                        break;
+                    default:
+                        $totalSales = 0;
+                        $totalProfits = 0;
+                }
+            }
+            return (float)$totalProfits / $totalSales;
+        } catch (Exception $exception) {
+            return 0;
+        }
+
+
+    }
+}

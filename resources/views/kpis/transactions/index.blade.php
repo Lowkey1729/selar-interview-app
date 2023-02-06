@@ -7,7 +7,7 @@
 
             @if(request()->hasAny(['date.to', 'date.from']))
                 <h2 class="my-4 font-medium">Transaction KPIs for
-                    <b>{{request()->input('date.from') ."<-->".  request()->input('date.to')}}</b></h2>
+                    <b>{{request()->input('date.from') ." To ".  request()->input('date.to')}}</b></h2>
             @else
                 <h2 class="my-4 font-medium">Transaction KPIs for the month of <b>{{date('F')}}</b></h2>
             @endif
@@ -91,11 +91,14 @@
         <div class="grid sm:grid-cols-3 gap-6">
             @forelse($transactions as $transaction)
                 <span
-                    class="col-span-1 bg-blue-600 rounded-lg hover:bg-blue-700 md:hover:cursor-pointer transition duration-300">
+                    class="col-span-1 bg-sellar-100 rounded-lg hover:bg-sellar-200 md:hover:cursor-pointer transition duration-300">
             <div class="py-8 px-6">
-                <div>
-                    <p class="text-gray-300 text-center">{{currencyTitle($transaction['currency'])}}</p>
+
+                <div class="flex items-center justify-center">
+                    <x-icons.money classs="h-5 w-5"></x-icons.money>
+                    <span class="text-gray-300 text-center">{{currencyTitle($transaction['currency'])}}</span>
                 </div>
+
                 <div class="mt-3 mb-1 text-white font-semibold text-xl">
                    <p>Total Sales: {{$transaction['total_amount_of_sales']}}</p>
                 </div>
@@ -112,6 +115,33 @@
 
 
         </div>
+
+
+        <div class="mt-4">
+            <h3 class="text-center text-2xl text-gray-600">Average Sales Value(Naira)</h3>
+            <div class="flex mt-2  justify-center items-center gap-6">
+                <div
+                    class="col-span-1 w-1/2 bg-sellar-100 rounded-lg hover:bg-sellar-200 md:hover:cursor-pointer transition duration-300">
+                    <span
+                    >
+                        <div class="py-8 px-6">
+                            <div class="flex items-center justify-center justify-items-center">
+                                <x-icons.money classs="h-5 w-5"></x-icons.money>
+                                <span class="text-gray-300 text-xl text-center">Transactions KPI</span>
+                            </div>
+
+                            <div class="mt-3 mb-1 text-white font-light  text-xl">
+                                <p>Value: &#8358;{{number_format(averageNairaValue($transactions))}}</p>
+                            </div>
+
+
+
+                        </div>
+                    </span>
+                </div>
+            </div>
+        </div>
+
     </div>
 
 @endsection

@@ -2127,6 +2127,16 @@ select{
     background-color: rgb(17 24 39 / var(--tw-bg-opacity));
 }
 
+.hover\:bg-sellar-200:hover{
+    --tw-bg-opacity: 1;
+    background-color: #5a0b4d;
+}
+
+.bg-sellar-100{
+    --tw-bg-opacity: 1;
+    background-color: #710f62;
+}
+
 .bg-white{
     --tw-bg-opacity: 1;
     background-color: rgb(255 255 255 / var(--tw-bg-opacity));

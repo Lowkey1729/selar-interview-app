@@ -21,7 +21,11 @@
     <header class="bg-white shadow-sm">
         <div class="max-w-7xl mx-auto py-2 px-3 sm:px-6 lg:px-8">
             <div class="flex justify-between">
-                <a href="{{url('/')}}" class="text-lg leading-6 font-semibold text-gray-900">{{ $page_title ?? 'Admin Page' }}</a>
+                <a href="{{url('/')}}">
+                    <img style="width: 100px; height: 80px" src="{{ url('selar-logo-small.png') }}"
+                         class="leading-6 font-semibold  text-gray-900"/>
+
+                </a>
                 <span>{{ today()->format('jS M, Y') }}</span>
             </div>
         </div>
@@ -30,7 +34,7 @@
         <div class="max-w-7xl mx-auto py-2 sm:px-6 lg:px-8">
             <!-- Replace with your content -->
             <div class="px-4 py-4 sm:px-0">
-                 @yield('content')
+                @yield('content')
             </div>
             <!-- /End replace -->
         </div>
