@@ -107,7 +107,8 @@ class User extends Authenticatable
 
         $result = $query
             ->join('purchases', 'users.id', '=', 'purchases.merchant_id')
-            ->selectRaw('purchases.merchant_id, count(*) as newSellers')
+            ->selectRaw('users.id, count(*) as newSellers')
+            ->where('purchases.status', 'paid')
             ->filterDateQuery($from, $to, $dateType, 'purchases.transaction_date')
             ->groupBy('users.id')
             ->havingRaw('count(purchases.id) = 1')
@@ -145,6 +146,14 @@ class User extends Authenticatable
 
     }
 
+    /**
+     * @param Builder $query
+     * @param $from
+     * @param $to
+     * @param $dateType
+     * @param $column
+     * @return Builder|mixed
+     */
     public function scopeFilterDateQuery(Builder $query, $from, $to, $dateType, $column)
     {
         $rawSQLDate = rawSQLDateFormat($dateType, $column);
