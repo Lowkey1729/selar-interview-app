@@ -89,6 +89,21 @@
     <div>
 
         <div class="grid sm:grid-cols-3 gap-6">
+            <span
+                class="col-span-1 bg-sellar-100 rounded-lg hover:bg-sellar-200 md:hover:cursor-pointer transition duration-300">
+            <div class="py-8 px-6">
+
+                <div class="flex items-center justify-center">
+                    <x-icons.money classs="h-5 w-5"></x-icons.money>
+                    <span class="text-gray-300 text-center">All Transactions</span>
+                </div>
+
+                <div class="mt-3 mb-1 text-white font-semibold text-xl">
+                   <p>Total: {{$totalTransactions}}</p>
+                </div>
+            </div>
+        </span>
+
             @forelse($transactions as $transaction)
                 <span
                     class="col-span-1 bg-sellar-100 rounded-lg hover:bg-sellar-200 md:hover:cursor-pointer transition duration-300">
@@ -127,7 +142,7 @@
                         <div class="py-8 px-6">
                             <div class="flex items-center justify-center justify-items-center">
                                 <x-icons.money classs="h-5 w-5"></x-icons.money>
-                                <span class="text-gray-300 text-xl text-center">Transactions KPI</span>
+                                <span class="text-gray-300 text-xl text-center">Average Sales</span>
                             </div>
 
                             <div class="mt-3 mb-1 text-white font-light  text-xl">

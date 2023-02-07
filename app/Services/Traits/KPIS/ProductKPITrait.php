@@ -24,10 +24,13 @@ trait ProductKPITrait
         $dateType = $data['date']['dateType'];
 
 
-        return Product::query()
+        $totalNewProducts = Product::query()
             ->selectRaw('COUNT(id) as total_new_products')
             ->filterDateQuery($from, $to, $dateType, 'created_at')
             ->first();
+        $data['totalNewProducts'] = $totalNewProducts['total_new_products'];
+        $data['totalProducts'] = Product::query()->count();
+        return $data;
     }
 
     /**

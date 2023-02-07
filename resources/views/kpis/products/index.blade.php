@@ -72,6 +72,7 @@
     <div>
 
         <div class="grid sm:grid-cols-3 gap-6">
+
                 <span
                     class="col-span-1 bg-sellar-100 rounded-lg hover:bg-sellar-200 md:hover:cursor-pointer transition duration-300">
             <div class="py-8 px-6">
@@ -81,7 +82,24 @@
                       <span class="text-center text-white">Total Products</span>
                 </div>
                 <div class="mt-3 mb-1 text-white font-semibold text-xl">
-                  <p>Total : {{$products['total_new_products']}}</p>
+                  <p>Total : {{$products['totalProducts']}}</p>
+                </div>
+
+
+
+            </div>
+        </span>
+
+            <span
+                class="col-span-1 bg-sellar-100 rounded-lg hover:bg-sellar-200 md:hover:cursor-pointer transition duration-300">
+            <div class="py-8 px-6">
+                <div class="flex justify-items-center items-center justify-center">
+                     <x-icons.chart-pie class="text-white h-5 w-5">
+                     </x-icons.chart-pie>
+                      <span class="text-center text-white">New Products</span>
+                </div>
+                <div class="mt-3 mb-1 text-white font-semibold text-xl">
+                  <p>Total : {{$products['totalNewProducts']}}</p>
                 </div>
 
 

@@ -4,6 +4,7 @@ namespace App\Http\Controllers\KPIs;
 
 use App\Currency;
 use App\Http\Controllers\Controller;
+use App\Purchase;
 use App\Services\Traits\KPIS\TransactionKPITrait;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Contracts\View\Factory;
@@ -24,7 +25,8 @@ class TransactionKPIController extends Controller
     {
         $transactions = $this->getTransactions($this->getRequestData($request->all()));
         $currencies = Currency::query()->get();
-        return view('kpis.transactions.index', compact('transactions', 'currencies'));
+        $totalTransactions = Purchase::query()->count();
+        return view('kpis.transactions.index', compact('transactions', 'currencies', 'totalTransactions'));
     }
 
     /**
