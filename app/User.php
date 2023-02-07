@@ -56,13 +56,13 @@ class User extends Authenticatable
      * @param array $data
      * @return int
      */
-    public function scopeCountAllUsers(Builder $query, array $data): int
+    public function scopeCountNewUsers(Builder $query, array $data): int
     {
         $from = $data['date']['from'];
         $to = $data['date']['to'];
         $dateType = $data['date']['dateType'];
 
-        return $query->selectRaw('count(users.id) as allUsers')
+        return $query->selectRaw('count(users.id) as newUsers')
             ->filterDateQuery($from, $to, $dateType, 'users.created_at')
             ->count();
     }

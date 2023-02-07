@@ -54,7 +54,7 @@ trait UserKPITrait
     protected function userCategories(): array
     {
         return [
-            'allUsers' => 'All Users',
+            'newUsers' => 'New Users',
             'uniqueSellers' => 'Unique Sellers',
             'newSellers' => 'New Sellers',
             'newMerchants' => 'New Merchants'];
@@ -91,10 +91,16 @@ trait UserKPITrait
      */
     protected function selectCategoryCountBasedOnFilter(array $data, array &$newData)
     {
+        $newData['totalUsers'] = User::query()->count();
 
-        if (in_array('allUsers', $data['user_category'])) {
-            $newData['allUsers'] = User::query()
-                ->countAllUsers($data);
+        if (in_array('newUsers', $data['user_category'])) {
+            $newData['newUsers'] = User::query()
+                ->countNewUsers($data);
+        }
+
+        if (in_array('uniqueSellers', $data['user_category'])) {
+            $newData['uniqueSellers'] = User::query()
+                ->countUniqueSellers($data);
         }
 
 
@@ -108,10 +114,6 @@ trait UserKPITrait
                 ->countNewMerchants($data);
         }
 
-        if (in_array('uniqueSellers', $data['user_category'])) {
-            $newData['uniqueSellers'] = User::query()
-                ->countUniqueSellers($data);
-        }
 
 
     }

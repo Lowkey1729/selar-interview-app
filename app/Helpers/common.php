@@ -56,8 +56,10 @@ if (!function_exists('userCategoryTitle')) {
     function userCategoryTitle(string $userCategory): string
     {
         switch ($userCategory) {
-            case "allUsers":
-                return 'All Users';
+            case "totalUsers":
+                return "Total Users";
+            case "newUsers":
+                return 'New Users';
             case "newMerchants":
                 return "New Merchants";
             case "newSellers":
@@ -69,8 +71,6 @@ if (!function_exists('userCategoryTitle')) {
         }
     }
 }
-
-
 
 
 if (!function_exists('pickDate')) {
